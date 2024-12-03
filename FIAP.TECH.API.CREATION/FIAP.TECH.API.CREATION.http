@@ -1,0 +1,6 @@
+@FIAP.TECH.API.CREATION_HostAddress = http://localhost:5155
+
+GET {{FIAP.TECH.API.CREATION_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
