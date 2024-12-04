@@ -1,8 +1,6 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace FIAP.TECH.CORE.DependencyInjection
+namespace FIAP.TECH.API.CREATION.DependencyInjection
 {
     public static class MassTransitExtension
     {
@@ -17,8 +15,6 @@ namespace FIAP.TECH.CORE.DependencyInjection
                     (context, cfg) =>
                     {
                         cfg.Host(configuration.GetConnectionString("RabbitMq"));
-                        cfg.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter("fiap", false));
-                        cfg.UseMessageRetry(retry => { retry.Interval(3, TimeSpan.FromSeconds(5)); });
                     });
 
             });

@@ -10,7 +10,7 @@ namespace FIAP.TECH.WORK.Extensions
 
             services.AddMassTransit(opt =>
             {
-                opt.AddConsumer<QueueCreateContactConsumer>(typeof(QueueContactConsumerDefinition));
+                opt.AddConsumer<QueueCreateContactConsumer>();
 
                 opt.SetKebabCaseEndpointNameFormatter();
 
@@ -19,11 +19,9 @@ namespace FIAP.TECH.WORK.Extensions
                     {
                         cfg.Host(configuration.GetConnectionString("RabbitMq"));
 
-                        cfg.ServiceInstance(instance =>
+                        cfg.ReceiveEndpoint(e =>
                         {
-                            instance.ConfigureJobServiceEndpoints();
-                            instance.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter("fiap", false));
-
+                            e.ConfigureConsumer<QueueCreateContactConsumer>(context);
                         });
                     });
 

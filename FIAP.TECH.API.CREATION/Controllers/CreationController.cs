@@ -1,8 +1,6 @@
 ﻿using FIAP.TECH.API.CREATION.DTO;
-using FIAP.TECH.API.CREATION.Validation;
+using FIAP.TECH.API.CREATION.Services;
 using FIAP.TECH.CORE.DomainObjects;
-using FluentValidation;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP.TECH.API.CREATION.Controllers
@@ -12,11 +10,11 @@ namespace FIAP.TECH.API.CREATION.Controllers
     [Route("[controller]/Create")]
     public class CreationController : ControllerBase
     {
-        private readonly IBus _bus;
+        private readonly ICreationService _creationService;
 
-        public CreationController(IBus bus)
+        public CreationController(ICreationService creationService)
         {
-            _bus = bus;
+            _creationService = creationService;
         }
 
         [HttpPost]
@@ -26,20 +24,20 @@ namespace FIAP.TECH.API.CREATION.Controllers
             {
                 var contact = new Contact { Email = contactDTO.Email, DDD = contactDTO.DDD, Name = contactDTO.Name, PhoneNumber = contactDTO.PhoneNumber };
 
-                //Valida se os dados estão corretos
-                var resultValidation = new ContactInsertValidation();
-                FluentValidation.Results.ValidationResult results = await resultValidation.ValidateAsync(contact);
+                var response = await _creationService.SendMessageAsync(contact);
 
-                if (results.Errors.Count != 0)
-                    throw new ValidationException(results.Errors);
 
-                await _bus.Publish(contact);
+                if (!response.Success)
+                {
+                    return BadRequest(response.Message);
+                }
 
-                return Ok(new { message = "Contato criado com sucesso." });
+                return Ok(response);
+
             }
-            catch (ValidationException vex)
+            catch (Exception ex)
             {
-                return BadRequest(new { errors = vex.Errors.Select(e => e.ErrorMessage) });
+                return BadRequest($"Error: {ex.Message}");
             }
         }
     }

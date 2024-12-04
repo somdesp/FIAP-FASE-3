@@ -1,11 +1,15 @@
 using FIAP.TECH.INFRASTRUCTURE.DependencyInjection;
 using FIAP.TECH.WORK.Extensions;
+using FIAP.TECH.WORK.Validation;
+using FluentValidation;
 
-var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddMassTransitExtensionWork(builder.Configuration);
-builder.Services.ConfigureDbContextExtension(builder.Configuration);
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((context, services) =>
+    {
+        services.AddMassTransitExtensionWork(context.Configuration);
+        services.ConfigureDbContextExtension(context.Configuration);
+        services.AddValidatorsFromAssemblyContaining<ContactInsertValidation>();
+    })
+    .Build();
 
-
-
-var host = builder.Build();
-host.Run();
+await host.RunAsync();

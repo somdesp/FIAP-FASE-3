@@ -17,10 +17,10 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    DDD = table.Column<string>(type: "varchar(2)", nullable: false),
-                    UF = table.Column<string>(type: "varchar(2)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DDD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UF = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,11 +33,11 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Email = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Password = table.Column<string>(type: "varchar(16)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,12 +50,12 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Email = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DDD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "varchar(20)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegionId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,16 +68,10 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "CreatedDate", "Email", "IsActive", "Name", "Password" },
-                values: new object[] { 1, new DateTime(2024, 12, 3, 10, 17, 32, 501, DateTimeKind.Local).AddTicks(4517), "tester@fiaptest.com.br", true, "Tech Challenge Fase1", "Senha@123" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_RegionId",
                 table: "Contacts",
                 column: "RegionId");
-
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('11','SP','São Paulo',GETDATE());");
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('12','SP','S. José dos Campos',GETDATE());");
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('13','SP','Santos',GETDATE());");
@@ -145,6 +139,7 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('97','AM','Coari',GETDATE());");
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('98','MA','São Luis',GETDATE());");
             migrationBuilder.Sql("INSERT INTO Regions(DDD,UF,Name,CreatedDate) VALUES ('99','MA','Imperatriz',GETDATE());");
+
         }
 
         /// <inheritdoc />

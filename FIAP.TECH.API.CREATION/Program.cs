@@ -1,7 +1,6 @@
-using FIAP.TECH.CORE.DependencyInjection;
+using FIAP.TECH.API.CREATION.DependencyInjection;
+using FIAP.TECH.API.CREATION.Services;
 using FIAP.TECH.INFRASTRUCTURE.DependencyInjection;
-using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMassTransitExtensionWeb(builder.Configuration);
 // Add DbContext
 builder.Services.ConfigureDbContextExtension(builder.Configuration);
+
+builder.Services.AddScoped<ICreationService, CreationService>();
+
 
 var app = builder.Build();
 
