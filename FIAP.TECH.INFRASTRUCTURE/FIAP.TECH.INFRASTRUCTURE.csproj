@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FIAP.TECH.CORE\FIAP.TECH.CORE.csproj" />
+		<ProjectReference Include="..\FIAP.TECH.CORE.DOMAIN\FIAP.TECH.CORE.DOMAIN.csproj" />
 	</ItemGroup>
 
 </Project>

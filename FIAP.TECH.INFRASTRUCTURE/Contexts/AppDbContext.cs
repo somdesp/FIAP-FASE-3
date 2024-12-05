@@ -1,4 +1,4 @@
-﻿using FIAP.TECH.CORE.DomainObjects;
+﻿using FIAP.TECH.CORE.DOMAIN.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.TECH.INFRASTRUCTURE.Contexts;

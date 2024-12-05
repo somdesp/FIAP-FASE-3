@@ -22,7 +22,7 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FIAP.TECH.CORE.DomainObjects.Contact", b =>
+            modelBuilder.Entity("FIAP.TECH.CORE.DOMAIN.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,7 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("DDD")
                         .IsRequired()
@@ -39,15 +39,15 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<int>("RegionId")
                         .HasColumnType("int");
@@ -59,7 +59,7 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("FIAP.TECH.CORE.DomainObjects.Region", b =>
+            modelBuilder.Entity("FIAP.TECH.CORE.DOMAIN.Entities.Region", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,26 +68,26 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("DDD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("UF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(2)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Regions");
                 });
 
-            modelBuilder.Entity("FIAP.TECH.CORE.DomainObjects.User", b =>
+            modelBuilder.Entity("FIAP.TECH.CORE.DOMAIN.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,31 +96,42 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(16)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 8, 1, 12, 17, 33, 279, DateTimeKind.Local).AddTicks(3613),
+                            Email = "tester@fiaptest.com.br",
+                            IsActive = true,
+                            Name = "Tech Challenge Fase1",
+                            Password = "Senha@123"
+                        });
                 });
 
-            modelBuilder.Entity("FIAP.TECH.CORE.DomainObjects.Contact", b =>
+            modelBuilder.Entity("FIAP.TECH.CORE.DOMAIN.Entities.Contact", b =>
                 {
-                    b.HasOne("FIAP.TECH.CORE.DomainObjects.Region", "Region")
+                    b.HasOne("FIAP.TECH.CORE.DOMAIN.Entities.Region", "Region")
                         .WithMany("Contacts")
                         .HasForeignKey("RegionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -129,7 +140,7 @@ namespace FIAP.TECH.INFRASTRUCTURE.Migrations
                     b.Navigation("Region");
                 });
 
-            modelBuilder.Entity("FIAP.TECH.CORE.DomainObjects.Region", b =>
+            modelBuilder.Entity("FIAP.TECH.CORE.DOMAIN.Entities.Region", b =>
                 {
                     b.Navigation("Contacts");
                 });

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -22,7 +22,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FIAP.TECH.CORE\FIAP.TECH.CORE.csproj" />
+		<ProjectReference Include="..\FIAP.TECH.CORE.APPLICATION\FIAP.TECH.CORE.APPLICATION.csproj" />
+		<ProjectReference Include="..\FIAP.TECH.CORE.DOMAIN\FIAP.TECH.CORE.DOMAIN.csproj" />
 		<ProjectReference Include="..\FIAP.TECH.INFRASTRUCTURE\FIAP.TECH.INFRASTRUCTURE.csproj" />
 	</ItemGroup>
 </Project>

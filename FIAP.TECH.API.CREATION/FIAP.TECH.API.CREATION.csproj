@@ -8,9 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.11.0" />
-		<PackageReference Include="MassTransit" Version="8.3.2" />
-		<PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
-		<PackageReference Include="MassTransit.RabbitMQ" Version="8.3.2" />
+
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
@@ -25,7 +23,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FIAP.TECH.CORE\FIAP.TECH.CORE.csproj" />
+		<ProjectReference Include="..\FIAP.TECH.CORE.APPLICATION\FIAP.TECH.CORE.APPLICATION.csproj" />
+		<ProjectReference Include="..\FIAP.TECH.CORE.DOMAIN\FIAP.TECH.CORE.DOMAIN.csproj" />
 		<ProjectReference Include="..\FIAP.TECH.INFRASTRUCTURE\FIAP.TECH.INFRASTRUCTURE.csproj" />
 	</ItemGroup>
 

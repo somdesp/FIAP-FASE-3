@@ -1,7 +1,7 @@
 ﻿using FIAP.TECH.CORE.DOMAIN.Entities;
 using FluentValidation;
 
-namespace FIAP.TECH.WORK.Validation;
+namespace FIAP.TECH.CORE.DOMAIN.Validation;
 
 public class ContactInsertValidation : AbstractValidator<Contact>
 {

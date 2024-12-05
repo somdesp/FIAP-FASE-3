@@ -1,5 +1,6 @@
 ﻿using FIAP.TECH.WORK.Events;
 using MassTransit;
+using System.Text.Json.Serialization;
 
 namespace FIAP.TECH.WORK.Extensions
 {
@@ -11,17 +12,26 @@ namespace FIAP.TECH.WORK.Extensions
             services.AddMassTransit(opt =>
             {
                 opt.AddConsumer<QueueCreateContactConsumer>();
+                opt.AddConsumer<QueueErrosContactConsumer>();
+                opt.AddConsumer<QueueConsultContactConsumer>();
 
                 opt.SetKebabCaseEndpointNameFormatter();
 
                 opt.UsingRabbitMq(
                     (context, cfg) =>
                     {
-                        cfg.Host(configuration.GetConnectionString("RabbitMq"));
-
-                        cfg.ReceiveEndpoint(e =>
+                        cfg.ConfigureJsonSerializerOptions(json =>
                         {
-                            e.ConfigureConsumer<QueueCreateContactConsumer>(context);
+                            json.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                            json.WriteIndented = true;
+                            return json;
+                        });
+
+                        cfg.Host(configuration.GetConnectionString("RabbitMq"));
+                        cfg.ServiceInstance(instance =>
+                        {
+                            instance.ConfigureJobServiceEndpoints();
+                            instance.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter("fiap", false));
                         });
                     });
 
