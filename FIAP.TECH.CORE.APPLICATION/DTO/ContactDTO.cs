@@ -1,4 +1,4 @@
-﻿namespace FIAP.TECH.API.CREATION.DTO;
+﻿namespace FIAP.TECH.CORE.APPLICATION.DTO;
 
 public class ContactDto
 {
