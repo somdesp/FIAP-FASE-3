@@ -11,7 +11,7 @@ namespace FIAP.TECH.WORK.Extensions
 
             services.AddMassTransit(opt =>
             {
-                opt.AddConsumer<QueueCreateContactConsumer>();
+                opt.AddConsumer<QueueCreateUpdateContactConsumer>();
                 opt.AddConsumer<QueueErrosContactConsumer>();
                 opt.AddConsumer<QueueConsultContactConsumer>();
 

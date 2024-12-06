@@ -93,11 +93,6 @@ public class ContactService : IContactService
         return _mapper.Map<IEnumerable<ContactDetailsDto>>(await _contactRepository.GetByDdd(ddd));
     }
 
-    public Task Create(ContactDto contactDTO)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<ContactResponse> SendResponseMessageAsync(ContactByDDD ddd)
     {
         var response = await _requestClient.GetResponse<ContactResponse>(ddd);

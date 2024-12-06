@@ -7,7 +7,6 @@ namespace FIAP.TECH.CORE.APPLICATION.Services.Contacts;
 public interface IContactService
 {
     Task SendMessageAsync(Contact message);
-    Task Create(ContactDto contactDTO);
     Task Update(ContactUpdateDto contactDTO);
     Task Delete(int id);
     Task<IEnumerable<ContactDto>> GetAll();

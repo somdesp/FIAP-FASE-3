@@ -1,25 +1,48 @@
+using FIAP.TECH.CORE.APPLICATION.Configurations;
+using FIAP.TECH.CORE.APPLICATION.Settings.JwtExtensions;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
+
+// Add methods extensions
+builder.Services.AddInjectionApplication(builder.Configuration);
+
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddSecurity();
+
+builder.Services.AddMassTransitExtensionWeb(builder.Configuration);
+// Add DbContext
+builder.Services.AddDbContextConfiguration(builder.Configuration);
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+//app.UseMetricServer();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
+//app.UseHttpMetrics();
+
 app.Run();
+
+public partial class ProgramDelete { }
