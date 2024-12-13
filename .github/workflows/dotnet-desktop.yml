@@ -1,0 +1,71 @@
+name: CI - Actions GITHUB
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+      - '**.csproj'
+      
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0' # The .NET SDK version to use  
+  DOTNET_INSTALL_DIR: "%LocalAppData%/Microsoft/dotnet"  
+  
+jobs: 
+  build:
+    name: Build Aplicação    
+    runs-on: ubuntu-latest
+    steps:     
+      - uses: actions/checkout@v4
+      - name: Build API
+        run: dotnet publish ./src/FIAP.TECH.API --configuration Release
+
+      - name: Build AUTH
+        run: dotnet publish ./src/FIAP.TECH.AUTH --configuration Release
+        
+      - name: Doker Login
+        uses: docker/login-action@v3.3.0
+        with:
+          # Username used to log against the Docker registry
+          username: 'somdesp'
+          # Password or personal access token used to log against the Docker registry
+          password: ${{secrets.DOCKERHUB}}    
+          
+      - name: Build and push Docker images (API)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./src/FIAP.TECH.API/
+          tags: 'somdesp/fiap:api_lasted'
+          push: true
+
+      - name: Build and push Docker images (AUTH)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./src/FIAP.TECH.AUTH/
+          tags: 'somdesp/fiap:auth_lasted'
+          push: true
+
+  test:
+    name: Testes Aplicação
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore ./src/FIAP.TECH.TESTS
+      
+    - name: Build
+      run: dotnet build ./src/FIAP.TECH.TESTS --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test ./src/FIAP.TECH.TESTS --no-restore --verbosity normal
