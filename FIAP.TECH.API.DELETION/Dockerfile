@@ -8,4 +8,4 @@ ENV ASPNETCORE_ENVIRONMENT=Release
 COPY ["bin/Release/net8.0", "app/"]
 
 WORKDIR /app
-ENTRYPOINT ["dotnet", "FIAP.TECH.API.CONSULT.dll"]
+ENTRYPOINT ["dotnet", "FIAP.TECH.API.DELETION.dll"]
