@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="..\.dockerignore" Link=".dockerignore">
+	    <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.11.0" />
 
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
