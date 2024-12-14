@@ -28,73 +28,80 @@ jobs:
     runs-on: self-hosted
     steps:     
       - uses: actions/checkout@v4
-      - name: Build API CREATION
-        run: dotnet publish ./FIAP.TECH.API.CREATION --configuration Release
 
-      - name: Build API UPDATE
-        run: dotnet publish ./FIAP.TECH.API.UPDATE --configuration Release
+      - name: Build image
+        run: docker compose -f docker-compose.yml build
 
-      - name: Build CONSULT
-        run: dotnet publish ./FIAP.TECH.API.CONSULT --configuration Release
+      - name: Push image to DO Container Registry
+        run: docker compose -f docker-compose.yml push
 
-      - name: Build API DELETION
-        run: dotnet publish ./FIAP.TECH.API.DELETION --configuration Release
+      # - name: Build API CREATION
+      #   run: dotnet publish ./FIAP.TECH.API.CREATION --configuration Release
 
-      - name: Build AUTH
-        run: dotnet publish ./FIAP.TECH.AUTH --configuration Release
+      # - name: Build API UPDATE
+      #   run: dotnet publish ./FIAP.TECH.API.UPDATE --configuration Release
 
-      - name: Build WORK Service
-        run: dotnet publish ./FIAP.TECH.WORK --configuration Release
+      # - name: Build CONSULT
+      #   run: dotnet publish ./FIAP.TECH.API.CONSULT --configuration Release
+
+      # - name: Build API DELETION
+      #   run: dotnet publish ./FIAP.TECH.API.DELETION --configuration Release
+
+      # - name: Build AUTH
+      #   run: dotnet publish ./FIAP.TECH.AUTH --configuration Release
+
+      # - name: Build WORK Service
+      #   run: dotnet publish ./FIAP.TECH.WORK --configuration Release
         
-      - name: Doker Login
-        uses: docker/login-action@v3.3.0
-        with:
-          # Username used to log against the Docker registry
-          username: 'somdesp'
-          # Password or personal access token used to log against the Docker registry
-          password: ${{secrets.DOCKERHUB}}    
+      # - name: Doker Login
+      #   uses: docker/login-action@v3.3.0
+      #   with:
+      #     # Username used to log against the Docker registry
+      #     username: 'somdesp'
+      #     # Password or personal access token used to log against the Docker registry
+      #     password: ${{secrets.DOCKERHUB}}    
           
-      - name: Build and push Docker images (API CREATION)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.API.CREATION
-          tags: 'somdesp/fiap3:api_creation_lasted'
-          push: true
+      # - name: Build and push Docker images (API CREATION)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.API.CREATION
+      #     tags: 'somdesp/fiap3:api_creation_lasted'
+      #     push: true
 
-      - name: Build and push Docker images (API UPDATE)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.API.UPDATE
-          tags: 'somdesp/fiap3:api_update_lasted'
-          push: true
+      # - name: Build and push Docker images (API UPDATE)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.API.UPDATE
+      #     tags: 'somdesp/fiap3:api_update_lasted'
+      #     push: true
 
-      - name: Build and push Docker images (API CONSULT)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.API.CONSULT
-          tags: 'somdesp/fiap3:api_consult_lasted'
-          push: true
+      # - name: Build and push Docker images (API CONSULT)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.API.CONSULT
+      #     tags: 'somdesp/fiap3:api_consult_lasted'
+      #     push: true
 
-      - name: Build and push Docker images (API DELETION)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.API.DELETION
-          tags: 'somdesp/fiap3:api_deletion_lasted'
-          push: true
+      # - name: Build and push Docker images (API DELETION)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.API.DELETION
+      #     tags: 'somdesp/fiap3:api_deletion_lasted'
+      #     push: true
       
-      - name: Build and push Docker images (WORK SERVICE)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.WORK
-          tags: 'somdesp/fiap3:work_service_lasted'
-          push: true
+      # - name: Build and push Docker images (WORK SERVICE)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.WORK
+      #     tags: 'somdesp/fiap3:work_service_lasted'
+      #     push: true
           
-      - name: Build and push Docker images (AUTH)
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: ./FIAP.TECH.AUTH/
-          tags: 'somdesp/fiap3:auth_lasted'
-          push: true
+      # - name: Build and push Docker images (AUTH)
+      #   uses: docker/build-push-action@v6.9.0
+      #   with:
+      #     context: ./FIAP.TECH.AUTH/
+      #     tags: 'somdesp/fiap3:auth_lasted'
+      #     push: true
 
 #  test:
 #    name: Testes Aplicação
