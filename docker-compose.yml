@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
     SqlServerDb:
         container_name: SqlServerContainer
@@ -8,7 +6,7 @@ services:
             - 8000:1433
         environment:
             - ACCEPT_EULA=Y
-            - MSSQL_SA_PASSWORD=myStong_Password123#
+            - MSSQL_SA_PASSWORD=FIAPConn_Pass123#
 
     rabbitmq:
         image: masstransit/rabbitmq:latest
