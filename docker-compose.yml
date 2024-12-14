@@ -3,31 +3,79 @@ version: '3.9'
 services:
     SqlServerDb:
         container_name: SqlServerContainer
-        image: mcr.microsoft.com/mssql/server:2017-latest
+        image: mcr.microsoft.com/mssql/server:2022-latest
         ports:
             - 8000:1433
         environment:
             - ACCEPT_EULA=Y
             - MSSQL_SA_PASSWORD=myStong_Password123#
 
-    # fiap.tech.api:
-    #     container_name: FiapAPIContainer
-    #     image: ${DOCKER_REGISTRY-}fiaptechapi
-    #     ports:
-    #         - 8002:8081
-    #     build:
-    #         context: .
-    #         dockerfile: FIAP.TECH.API/Dockerfile
-    #     depends_on:
-    #         - SqlServerDb
+    rabbitmq:
+        image: masstransit/rabbitmq:latest
+        container_name: rabbitmq
+        ports:
+            - "5672:5672" # Porta de comunicação (AMQP)
+            - "15672:15672" # Porta da interface de administração do RabbitMQ
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
 
     fiap.tech.auth:
         container_name: auth_lasted
         image: somdesp/fiap3:auth_lasted
         # profiles: [ web ]
         ports:
+            - 8001:8080
+        depends_on:
+            - SqlServerDb
+            - rabbitmq
+
+    fiap.tech.api.create:
+        container_name: api_creation_lasted
+        image: somdesp/fiap3:api_creation_lasted
+        # profiles: [ web ]
+        ports:
+            - 8002:8080
+        depends_on:
+            - SqlServerDb
+            - rabbitmq
+
+    fiap.tech.api.update:
+        container_name: api_update_lasted
+        image: somdesp/fiap3:api_update_lasted
+        # profiles: [ web ]
+        ports:
             - 8003:8080
         depends_on:
             - SqlServerDb
-        environment:
-            - ConnectionStrings__FiapConnection=Server=SqlServerDb;Database=FIAP;User=sa;Password=myStong_Password123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;
+            - rabbitmq
+
+    fiap.tech.api.deletion:
+        container_name: api_deletion_lasted
+        image: somdesp/fiap3:api_deletion_lasted
+        # profiles: [ web ]
+        ports:
+            - 8004:8080
+        depends_on:
+            - SqlServerDb
+            - rabbitmq
+
+    fiap.tech.api.consult:
+        container_name: api_consult_lasted
+        image: somdesp/fiap3:api_consult_lasted
+        # profiles: [ web ]
+        ports:
+            - 8005:8080
+        depends_on:
+            - SqlServerDb
+            - rabbitmq
+
+    fiap.tech.work.service:
+        container_name: work_service_lasted
+        image: somdesp/fiap3:work_service_lasted
+        # profiles: [ web ]
+        ports:
+            - 8006:8080
+        depends_on:
+            - SqlServerDb
+            - rabbitmq
