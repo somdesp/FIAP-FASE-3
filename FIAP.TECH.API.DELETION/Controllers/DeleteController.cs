@@ -8,7 +8,7 @@ namespace FIAP.TECH.API.DELETION.Controllers
 
     [ApiController]
     [Authorize]
-    [Route("[controller]/Delete")]
+    [Route("[controller]")]
     public class DeleteController : ControllerBase
     {
         private readonly IContactService _contactService;

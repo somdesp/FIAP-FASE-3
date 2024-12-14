@@ -25,7 +25,6 @@ services:
             - 8001:8080
         depends_on:
             - SqlServerDb
-            - rabbitmq-server
 
     fiap.tech.api.create:
         container_name: api_creation_lasted
@@ -35,6 +34,9 @@ services:
         depends_on:
             - SqlServerDb
             - rabbitmq-server
+        environment:
+            ConnectionStrings__FiapConnection: "Server=SqlServerDb;Database=FIAP-Fase3;User=SA;Password=FIAPConn_Pass123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;"
+            ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.update:
         container_name: api_update_lasted
@@ -44,6 +46,9 @@ services:
         depends_on:
             - SqlServerDb
             - rabbitmq-server
+        environment:
+            ConnectionStrings__FiapConnection: "Server=SqlServerDb;Database=FIAP-Fase3;User=SA;Password=FIAPConn_Pass123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;"
+            ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.deletion:
         container_name: api_deletion_lasted
@@ -53,6 +58,9 @@ services:
         depends_on:
             - SqlServerDb
             - rabbitmq-server
+        environment:
+            ConnectionStrings__FiapConnection: "Server=SqlServerDb;Database=FIAP-Fase3;User=SA;Password=FIAPConn_Pass123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;"
+            ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.consult:
         container_name: api_consult_lasted
@@ -62,6 +70,9 @@ services:
         depends_on:
             - SqlServerDb
             - rabbitmq-server
+        environment:
+            ConnectionStrings__FiapConnection: "Server=SqlServerDb;Database=FIAP-Fase3;User=SA;Password=FIAPConn_Pass123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;"
+            ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.work.service:
         container_name: work_service_lasted

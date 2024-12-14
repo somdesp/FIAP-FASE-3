@@ -9,7 +9,7 @@ namespace FIAP.TECH.API.CREATION.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("[controller]/Create")]
+    [Route("[controller]")]
     public class CreationController : ControllerBase
     {
         private readonly IContactService _contactService;

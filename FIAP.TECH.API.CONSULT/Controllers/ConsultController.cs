@@ -1,6 +1,6 @@
-﻿using FIAP.TECH.CORE.APPLICATION.DTO;
+﻿using AutoMapper;
+using FIAP.TECH.CORE.APPLICATION.DTO;
 using FIAP.TECH.CORE.APPLICATION.Services.Contacts;
-using FIAP.TECH.CORE.DOMAIN.Entities;
 using FIAP.TECH.CORE.DOMAIN.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,14 +8,16 @@ namespace FIAP.TECH.API.CONSULT.Controllers
 {
     [ApiController]
     //[Authorize]
-    [Route("[controller]/Consult")]
+    [Route("[controller]")]
     public class ConsultController : ControllerBase
     {
         private readonly IContactService _contactService;
+        private readonly IMapper _mapper;
 
-        public ConsultController(IContactService contactService)
+        public ConsultController(IContactService contactService, IMapper mapper)
         {
             _contactService = contactService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -50,7 +52,8 @@ namespace FIAP.TECH.API.CONSULT.Controllers
                 {
                     return BadRequest(response.Message);
                 }
-                return Ok(response.Contacts);
+
+                return Ok(_mapper.Map<IEnumerable<ContactDto>>(response.Contacts));
 
             }
             catch (Exception ex)
