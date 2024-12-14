@@ -10,7 +10,7 @@ namespace FIAP.TECH.API.UPDATE.Controllers
 
     [ApiController]
     [Authorize]
-    [Route("[controller]/Update")]
+    [Route("[controller]")]
     public class UpdateController : ControllerBase
     {
         private readonly IContactService _contactService;

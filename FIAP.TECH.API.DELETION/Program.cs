@@ -25,8 +25,7 @@ builder.Services.AddDbContextConfiguration(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//app.UseMetricServer();
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -34,7 +33,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

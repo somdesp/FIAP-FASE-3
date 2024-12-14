@@ -3,9 +3,11 @@ using FIAP.TECH.CORE.APPLICATION.Configurations;
 using FIAP.TECH.CORE.APPLICATION.Services.Users;
 using FIAP.TECH.CORE.APPLICATION.Settings.JwtExtensions;
 using FIAP.TECH.CORE.DOMAIN.Interfaces.Repositories;
+using FIAP.TECH.INFRASTRUCTURE.Contexts;
 using FIAP.TECH.INFRASTRUCTURE.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +25,19 @@ builder.Services.AddSecurity();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.MapPost("/login", [AllowAnonymous] async ([FromBody] AuthenticateRequest request, IUserService userService) =>
 {
