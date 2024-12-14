@@ -49,19 +49,47 @@ jobs:
           # Password or personal access token used to log against the Docker registry
           password: ${{secrets.DOCKERHUB}}    
           
-      # - name: Build and push Docker images (API)
-      #   uses: docker/build-push-action@v6.9.0
-      #   with:
-      #     context: ./src/FIAP.TECH.API/
-      #     tags: 'somdesp/fiap:api_lasted'
-      #     push: true
+      - name: Build and push Docker images (API CREATION)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.API.CREATION
+          tags: 'somdesp/fiap3:api_creation_lasted'
+          push: true
 
-      # - name: Build and push Docker images (AUTH)
-      #   uses: docker/build-push-action@v6.9.0
-      #   with:
-      #     context: ./src/FIAP.TECH.AUTH/
-      #     tags: 'somdesp/fiap:auth_lasted'
-      #     push: true
+      - name: Build and push Docker images (API UPDATE)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.API.UPDATE
+          tags: 'somdesp/fiap3:api_update_lasted'
+          push: true
+
+      - name: Build and push Docker images (API CONSULT)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.API.CONSULT
+          tags: 'somdesp/fiap3:api_consult_lasted'
+          push: true
+
+      - name: Build and push Docker images (API DELETION)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.API.DELETION
+          tags: 'somdesp/fiap3:api_deletion_lasted'
+          push: true
+      
+      - name: Build and push Docker images (WORK SERVICE)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.WORK
+          tags: 'somdesp/fiap3:work_service_lasted'
+          push: true
+          
+      - name: Build and push Docker images (AUTH)
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: ./FIAP.TECH.AUTH/
+          tags: 'somdesp/fiap3:auth_lasted'
+          push: true
 
 #  test:
 #    name: Testes Aplicação
