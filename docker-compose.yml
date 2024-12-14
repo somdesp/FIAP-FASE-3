@@ -1,14 +1,14 @@
-version: '3.4'
+version: '3.9'
 
 services:
-    # SqlServerDb:
-    #      container_name: SqlServerContainer
-    #      image: mcr.microsoft.com/mssql/server:2017-latest
-    #      ports:
-    #          - 8000:1433
-    #      environment:
-    #          - ACCEPT_EULA=Y
-    #          - MSSQL_SA_PASSWORD=myStong_Password123# 
+    SqlServerDb:
+        container_name: SqlServerContainer
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+            - 8000:1433
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=myStong_Password123#
 
     # fiap.tech.api:
     #     container_name: FiapAPIContainer
@@ -23,12 +23,11 @@ services:
 
     fiap.tech.auth:
         container_name: auth_lasted
-        image: auth_lasted
+        image: somdesp/fiap3:auth_lasted
         # profiles: [ web ]
         ports:
-            - 8003:8081
-        build:
-            context: ./FIAP.TECH.AUTH
-            dockerfile: ./Dockerfile
-        # depends_on:
-        #     - SqlServerDb
+            - 8003:8080
+        depends_on:
+            - SqlServerDb
+        environment:
+            - ConnectionStrings__FiapConnection=Server=SqlServerDb;Database=FIAP;User=sa;Password=myStong_Password123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;
