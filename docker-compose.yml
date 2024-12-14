@@ -22,8 +22,8 @@ services:
     #         - SqlServerDb
 
     fiap.tech.auth:
-        container_name: FiapAUTHContainer
-        image: auth-fiaptechauth
+        container_name: auth_lasted
+        image: auth_lasted
         # profiles: [ web ]
         ports:
             - 8003:8081
