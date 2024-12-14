@@ -28,7 +28,7 @@ services:
         ports:
             - 8003:8081
         build:
-            context: .
-            dockerfile: FIAP.TECH.AUTH/Dockerfile
+            context: ./FIAP.TECH.AUTH
+            dockerfile: ./Dockerfile
         # depends_on:
         #     - SqlServerDb
