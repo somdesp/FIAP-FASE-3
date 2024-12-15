@@ -129,8 +129,8 @@ public class ContactServiceTests : BaseServiceTests<Contact>
         // Arrange
         var contactDetailsDtos = new List<ContactDetailsDto>
         {
-            new ContactDetailsDto { Id = 1, Name = "Contact 1", DDD = "11" },
-            new ContactDetailsDto { Id = 2, Name = "Contact 2", DDD = "11" }
+            new() { Id = 1, Name = "Contact 1", DDD = "11" },
+            new() { Id = 2, Name = "Contact 2", DDD = "11" }
         };
 
         // Act
@@ -162,7 +162,7 @@ public class ContactServiceTests : BaseServiceTests<Contact>
     public async Task Update_ShouldThrowValidationException_WhenDDDIsInvalid()
     {
         // Arrange
-        var contact = new Contact { Id = 1, DDD = "99", Email = "", Name = "", PhoneNumber = "" }; // DDD inválido
+        var contact = new Contact { Id = 1, DDD = "99", Email = "", Name = "", PhoneNumber = "" };
 
         var contactUpdateDto = new ContactUpdateDto { Id = 1, DDD = "99" };
 
@@ -180,6 +180,34 @@ public class ContactServiceTests : BaseServiceTests<Contact>
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _contactService.Delete(contactId));
         Assert.Equal("Contato com o ID informado não existe.", exception.Message);
+    }
+
+    [Fact]
+    public async Task SendResponseMessageAsync_ShouldThrowException_WhenRequestFails()
+    {
+        // Arrange
+        var mapperMock = new Mock<IMapper>();
+        var regionRepositoryMock = new Mock<IRegionRepository>();
+        var contactRepositoryMock = new Mock<IContactRepository>();
+        var busControlMock = new Mock<IBusControl>();
+        var requestClientMock = new Mock<IRequestClient<ContactByDDD>>();
+
+        var ddd = new ContactByDDD("11");
+
+        requestClientMock
+            .Setup(x => x.GetResponse<ContactResponse>(ddd, default, default)) // Simula a falha
+            .ThrowsAsync(new Exception("Erro ao solicitar a resposta"));
+
+        var contactService = new ContactService(
+            mapperMock.Object,
+            regionRepositoryMock.Object,
+            contactRepositoryMock.Object,
+            busControlMock.Object,
+            requestClientMock.Object
+        );
+
+        // Act & Assert
+        await Assert.ThrowsAsync<System.Exception>(() => contactService.SendResponseMessageAsync(ddd));
     }
 
 }
