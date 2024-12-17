@@ -97,25 +97,28 @@ jobs:
           tags: 'somdesp/fiap3:auth_lasted'
           push: true
 
-#  test:
-#    name: Testes Aplicação
-#    runs-on: self-hosted
-#    steps:
-#    - uses: actions/checkout@v4
-#    - name: Setup .NET Core
-#      uses: actions/setup-dotnet@v3
-#      with:
-#        dotnet-version: ${{ env.DOTNET_VERSION }}
+  test:
+    name: Testes Aplicação
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-#    - name: Install dependencies
-#      run: dotnet restore ./src/FIAP.TECH.TESTS
+    - name: Install dependencies
+      run: dotnet restore ./TESTS/FIAP.TECH.TESTS
+
+    - name: Build
+      run: dotnet build ./TESTS/FIAP.TECH.TESTS --configuration Release --no-restore
       
-#    - name: Build
-#      run: dotnet build ./src/FIAP.TECH.TESTS --configuration Release --no-restore
-    
-#    - name: Test
-#      run: dotnet test ./src/FIAP.TECH.TESTS --no-restore --verbosity normal
+    - name: Test
+      run: dotnet test ./TESTS/FIAP.TECH.TESTS --no-restore --verbosity normal
 
-
+  deploy:
+    name: Deploy Docker Aplicação
+    runs-on: self-hosted
+    steps:      
       - name: Deploy Docker
         run: docker-compose up -d
