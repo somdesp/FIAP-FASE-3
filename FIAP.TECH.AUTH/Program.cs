@@ -1,12 +1,13 @@
+using FIAP.TECH.CORE.APPLICATION.Authentication;
 using FIAP.TECH.CORE.APPLICATION.Configurations;
 using FIAP.TECH.CORE.APPLICATION.Services.Users;
 using FIAP.TECH.CORE.APPLICATION.Settings.JwtExtensions;
 using FIAP.TECH.CORE.DOMAIN.Interfaces.Repositories;
 using FIAP.TECH.INFRASTRUCTURE.Contexts;
 using FIAP.TECH.INFRASTRUCTURE.Repositories;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +22,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
 
 builder.Services.AddSecurity();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
-
-app.UseAuthorization();
-app.MapIdentityApi<IdentityUser>();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -42,24 +38,18 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docke
     app.UseSwaggerUI();
 }
 
-app.MapGet("/user", (ClaimsPrincipal user) =>
+
+app.MapPost("/login", [AllowAnonymous] async ([FromBody] AuthenticateRequest request, IUserService userService) =>
 {
-    return Results.Ok($"Welcome {user.Identity.Name}!");
+    var response = await userService.Authenticate(request);
+
+    if (response is null)
+        return Results.BadRequest(new { message = "Email e/ou senha invÃ¡lido(s)" });
+
+    return Results.Ok(response);
 })
-    .RequireAuthorization();
-
-
-//app.MapPost("/login", [AllowAnonymous] async ([FromBody] AuthenticateRequest request, IUserService userService) =>
-//{
-//    var response = await userService.Authenticate(request);
-
-//    if (response is null)
-//        return Results.BadRequest(new { message = "Email e/ou senha inválido(s)" });
-
-//    return Results.Ok(response);
-//})
-//.WithName("login")
-//.WithOpenApi();
+.WithName("login")
+.WithOpenApi();
 
 app.Run();
 
