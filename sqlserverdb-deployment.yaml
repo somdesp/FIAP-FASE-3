@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet  
+metadata:
+  name: sqlserverdb
+  namespace: fiap
+  labels:
+    app: sqlserverdb
+
+spec:
+  serviceName: "sqlserverdb"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlserverdb
+  template:
+    metadata:
+      labels:
+        app: sqlserverdb
+    spec:
+      containers:
+        - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: FIAPConn_Pass123#
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          name: sqlserverdb
+          ports:
+            - containerPort: 1433
+              protocol: TCP
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserverdb
+  namespace: fiap
+spec:
+  type: LoadBalancer
+  selector:
+    statefulset.kubernetes.io/pod-name: sqlserverdb
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 1433
+      name: tcpsql
+
