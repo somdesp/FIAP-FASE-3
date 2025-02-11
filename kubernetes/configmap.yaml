@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apis-configmap
+  namespace: default
+data:
+  FiapConnection: "Server=sqlserverdb;Database=FIAP-Fase3;User=SA;Password=FIAPConn_Pass123#;MultipleActiveResultSets=True;Persist Security Info=False;Encrypt=False;"
+  RabbitMq: "amqp://guest:guest@rabbitmq-server:5672"

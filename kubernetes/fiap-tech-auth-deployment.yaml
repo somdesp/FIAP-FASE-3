@@ -7,12 +7,18 @@ metadata:
     app: fiap-tech-auth
 spec:
   containers:
-    - image: somdesp/fiap3:auth_lasted
+    - image: fiaptechauth:dev
       name: fiap-tech-auth
       ports:
         - containerPort: 8080
           protocol: TCP
-
+      env:
+        - name: AppSettings__ConnectionStrings__FiapConnection 
+          valueFrom:
+            secretKeyRef:
+              name: apiserver-secret
+              key: FiapConnection
+    
 ---
 
 apiVersion: v1

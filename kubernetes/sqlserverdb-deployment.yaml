@@ -11,7 +11,10 @@ spec:
         - name: ACCEPT_EULA
           value: "Y"
         - name: MSSQL_SA_PASSWORD
-          value: FIAPConn_Pass123#
+          valueFrom:
+            secretKeyRef:
+              name: sqlserverdb-secret
+              key: SA_PASSWORD
       image: mcr.microsoft.com/mssql/server:2022-latest
       name: sqlserverdb
       ports:
