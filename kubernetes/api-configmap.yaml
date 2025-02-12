@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: apiserver-configmap
 data:
-  RabbitMq: "amqp://guest:guest@rabbitmq-server:30090"
+  RabbitMq: "amqp://guest:guest@rabbitmq-server:5672"

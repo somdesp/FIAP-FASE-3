@@ -6,7 +6,7 @@ metadata:
   labels:
     app: work-service-lasted
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: work-service-lasted
@@ -25,13 +25,13 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 3
           env:
-            - name: AppSettings__ConnectionStrings__FiapConnection
+            - name: ConnectionStrings__FiapConnection
               valueFrom:
                 secretKeyRef:
                   name: apiserver-secret
                   key: FiapConnection
 
-            - name: AppSettings__ConnectionStrings__RabbitMq
+            - name: ConnectionStrings__RabbitMq
               valueFrom:
                 configMapKeyRef:
                   name: apiserver-configmap

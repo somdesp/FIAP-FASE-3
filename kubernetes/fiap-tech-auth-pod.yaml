@@ -13,20 +13,19 @@ spec:
         - containerPort: 8080
           protocol: TCP
       env:
-        - name: AppSettings__ConnectionStrings__FiapConnection 
+        - name: ConnectionStrings__FiapConnection
           valueFrom:
             secretKeyRef:
               name: apiserver-secret
               key: FiapConnection
 
-        - name: AppSettings__ConnectionStrings__RabbitMq
+        - name: ConnectionStrings__RabbitMq
           valueFrom:
             configMapKeyRef:
               name: apiserver-configmap
-              key: RabbitMq              
-    
----
+              key: RabbitMq
 
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,7 +33,7 @@ metadata:
   # namespace: fiap
 spec:
   type: NodePort
-  ports:      
+  ports:
     - port: 8080
       nodePort: 30081
   selector:

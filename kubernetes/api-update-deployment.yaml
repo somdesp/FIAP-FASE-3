@@ -6,7 +6,7 @@ metadata:
   labels:
     app: api-update-lasted
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: api-update-lasted
@@ -22,13 +22,13 @@ spec:
             - containerPort: 8080
               protocol: TCP
           env:
-            - name: AppSettings__ConnectionStrings__FiapConnection
+            - name: ConnectionStrings__FiapConnection
               valueFrom:
                 secretKeyRef:
                   name: apiserver-secret
                   key: FiapConnection
 
-            - name: AppSettings__ConnectionStrings__RabbitMq
+            - name: ConnectionStrings__RabbitMq
               valueFrom:
                 configMapKeyRef:
                   name: apiserver-configmap
