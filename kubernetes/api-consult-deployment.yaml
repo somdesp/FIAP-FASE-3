@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-consult-lasted
+  # namespace: fiap
+  labels:
+    app: api-consult-lasted
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-consult-lasted
+  template:
+    metadata:
+      labels:
+        app: api-consult-lasted
+    spec:
+      containers:
+        - image: somdesp/fiap3:api_consult_lasted
+          name: api-consult-lasted
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: AppSettings__ConnectionStrings__FiapConnection
+              valueFrom:
+                secretKeyRef:
+                  name: apiserver-secret
+                  key: FiapConnection
+
+            - name: AppSettings__ConnectionStrings__RabbitMq
+              valueFrom:
+                configMapKeyRef:
+                  name: apiserver-configmap
+                  key: RabbitMq
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-consult-lasted
+  # namespace: fiap
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30085
+  selector:
+    app: api-consult-lasted

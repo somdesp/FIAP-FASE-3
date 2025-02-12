@@ -19,6 +19,20 @@ spec:
       name: sqlserverdb
       ports:
         - containerPort: 1433
+      volumeMounts:
+        - name: mssqldb
+          mountPath: /var/opt/mssql/data
+      livenessProbe:
+        exec:
+          command:
+            - ls
+            - /var/opt/mssql/data
+        initialDelaySeconds: 10
+        periodSeconds: 30         
+  volumes:
+    - name: mssqldb
+      persistentVolumeClaim:
+        claimName: bd-fase-4-pvc  
 ---
 apiVersion: v1
 kind: Service

@@ -116,9 +116,16 @@ jobs:
     - name: Test
       run: dotnet test ./TESTS/FIAP.TECH.TESTS --no-restore --verbosity normal
 
-  deploy:
+  deploy_Docker:
     name: Deploy Docker Aplicação
     runs-on: self-hosted
     steps:      
       - name: Deploy Docker
         run: docker-compose up -d
+
+  # deploy_Kubernets:
+  #         name: Deploy Kubernets Aplicação
+  #         runs-on: self-hosted
+  #         steps:      
+  #           - name: Deploy Docker
+  #             run: docker-compose up -d        

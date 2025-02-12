@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-creation-lasted
+  # namespace: fiap
+  labels:
+    app: api-creation-lasted
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-creation-lasted
+  template:
+    metadata:
+      labels:
+        app: api-creation-lasted
+    spec:
+      containers:
+        - image: somdesp/fiap3:api_creation_lasted
+          name: api-creation-lasted
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: AppSettings__ConnectionStrings__FiapConnection
+              valueFrom:
+                secretKeyRef:
+                  name: apiserver-secret
+                  key: FiapConnection
+
+            - name: AppSettings__ConnectionStrings__RabbitMq
+              valueFrom:
+                configMapKeyRef:
+                  name: apiserver-configmap
+                  key: RabbitMq
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-creation-lasted
+  # namespace: fiap
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30082
+  selector:
+    app: api-creation-lasted

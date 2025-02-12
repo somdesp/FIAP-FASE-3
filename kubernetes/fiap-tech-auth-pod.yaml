@@ -7,7 +7,7 @@ metadata:
     app: fiap-tech-auth
 spec:
   containers:
-    - image: fiaptechauth:dev
+    - image: somdesp/fiap3:auth_lasted
       name: fiap-tech-auth
       ports:
         - containerPort: 8080
@@ -18,6 +18,12 @@ spec:
             secretKeyRef:
               name: apiserver-secret
               key: FiapConnection
+
+        - name: AppSettings__ConnectionStrings__RabbitMq
+          valueFrom:
+            configMapKeyRef:
+              name: apiserver-configmap
+              key: RabbitMq              
     
 ---
 

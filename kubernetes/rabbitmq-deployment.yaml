@@ -1,0 +1,28 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  #namespace: rabbitmq-system
+  name: rabbitmq-test-ready
+spec:
+  replicas: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  rabbitmq:
+    additionalConfig: |
+      log.console.level = info
+      default_user= guest 
+      default_pass = guest
+      default_user_tags.administrator = true
+  service:
+    type: NodePort
+  override:
+    service:
+      spec:
+        ports:
+          - port: 15672
+            nodePort: 30090

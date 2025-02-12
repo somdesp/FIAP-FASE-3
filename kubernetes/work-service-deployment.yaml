@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: work-service-lasted
+  # namespace: fiap
+  labels:
+    app: work-service-lasted
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: work-service-lasted
+  template:
+    metadata:
+      labels:
+        app: work-service-lasted
+    spec:
+      containers:
+        - image: somdesp/fiap3:work_service_lasted
+          name: work-service-lasted
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5001
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          env:
+            - name: AppSettings__ConnectionStrings__FiapConnection
+              valueFrom:
+                secretKeyRef:
+                  name: apiserver-secret
+                  key: FiapConnection
+
+            - name: AppSettings__ConnectionStrings__RabbitMq
+              valueFrom:
+                configMapKeyRef:
+                  name: apiserver-configmap
+                  key: RabbitMq
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: work-service-lasted
+#   # namespace: fiap
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8080
+#       nodePort: 30081
+#   selector:
+#     app: work-service-lasted
