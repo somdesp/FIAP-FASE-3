@@ -117,15 +117,38 @@ jobs:
       run: dotnet test ./TESTS/FIAP.TECH.TESTS --no-restore --verbosity normal
 
   deploy_Docker:
-    name: Deploy Docker Aplicação
+    name: Deploy the application in Docker
     runs-on: self-hosted
     steps:      
       - name: Deploy Docker
         run: docker-compose up -d
 
-  # deploy_Kubernets:
-  #         name: Deploy Kubernets Aplicação
-  #         runs-on: self-hosted
-  #         steps:      
-  #           - name: Deploy Docker
-  #             run: docker-compose up -d        
+  deploy_Kubernets:
+          name: Deploy Kubernets Aplicação
+          runs-on: self-hosted
+          steps:      
+          - name: Check out the repository to the runner
+            uses: actions/checkout@v4 
+
+          - name: Download kubectl binaries
+            run: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+     
+          - name: Install Kubectl
+            run: sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+          - name: Deploy the application in Kubernets
+            run: |
+              kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+              kubectl apply -f rabbitmq-deployment.yaml
+              kubectl apply -f api-configmap.yaml
+              kubectl apply -f api-secret.yaml
+              kubectl apply -f sql-secret.yaml
+              kubectl apply -f pv-vol.yaml
+              kubectl apply -f pvc-vol.yaml
+              kubectl apply -f sqlserverdb-deployment.yaml
+              kubectl apply -f api-auth-deployment.yaml
+              kubectl apply -f api-creation-deployment.yaml
+              kubectl apply -f api-update-deployment.yaml
+              kubectl apply -f api-deletion-deployment.yaml
+              kubectl apply -f api-consult-deployment.yaml
+              kubectl apply -f work-service-deployment.yaml      
