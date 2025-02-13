@@ -6,7 +6,7 @@ metadata:
   labels:
     app: work-service-lasted
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: work-service-lasted
