@@ -137,16 +137,16 @@ jobs:
           - name: Deploy the application in Kubernets
             run: |
               kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
-              kubectl apply -f rabbitmq-deployment.yaml
-              kubectl apply -f api-configmap.yaml
-              kubectl apply -f api-secret.yaml
-              kubectl apply -f sql-secret.yaml
-              kubectl apply -f pv-vol.yaml
-              kubectl apply -f pvc-vol.yaml
-              kubectl apply -f sqlserverdb-deployment.yaml
-              kubectl apply -f api-auth-deployment.yaml
-              kubectl apply -f api-creation-deployment.yaml
-              kubectl apply -f api-update-deployment.yaml
-              kubectl apply -f api-deletion-deployment.yaml
-              kubectl apply -f api-consult-deployment.yaml
-              kubectl apply -f work-service-deployment.yaml      
+              kubectl apply -f kubernetes/rabbitmq-deployment.yaml
+              kubectl apply -f kubernetes/api-configmap.yaml
+              kubectl apply -f kubernetes/api-secret.yaml
+              kubectl apply -f kubernetes/sql-secret.yaml
+              kubectl apply -f kubernetes/pv-vol.yaml
+              kubectl apply -f kubernetes/pvc-vol.yaml
+              kubectl apply -f kubernetes/sqlserverdb-deployment.yaml
+              kubectl apply -f kubernetes/api-auth-deployment.yaml
+              kubectl apply -f kubernetes/api-creation-deployment.yaml
+              kubectl apply -f kubernetes/api-update-deployment.yaml
+              kubectl apply -f kubernetes/api-deletion-deployment.yaml
+              kubectl apply -f kubernetes/api-consult-deployment.yaml
+              kubectl apply -f kubernetes/work-service-deployment.yaml      
