@@ -100,6 +100,7 @@ jobs:
   test:
     name: Testes Aplicação
     runs-on: self-hosted
+    needs: build
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET Core
@@ -119,6 +120,8 @@ jobs:
   deploy_Docker:
     name: Deploy the application in Docker
     runs-on: self-hosted
+    needs: [build, test]
+
     steps:      
       - name: Deploy Docker
         run: docker-compose up -d
@@ -126,6 +129,7 @@ jobs:
   deploy_Kubernets:
           name: Deploy Kubernets Aplicação
           runs-on: self-hosted
+          needs: [build, test]
           steps:      
           - name: Check out the repository to the runner
             uses: actions/checkout@v4 
