@@ -10,4 +10,4 @@ spec:
   storageClassName: local-storage
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /run/desktop/mnt/host/d/vol/bd
+    path: /run/desktop/mnt/host/c/vol/bd

@@ -149,4 +149,7 @@ jobs:
               kubectl apply -f kubernetes/api-update-deployment.yaml
               kubectl apply -f kubernetes/api-deletion-deployment.yaml
               kubectl apply -f kubernetes/api-consult-deployment.yaml
-              kubectl apply -f kubernetes/work-service-deployment.yaml      
+              kubectl apply -f kubernetes/work-service-deployment.yaml
+              kubectl apply -f kubernetes/prometheus-config.yaml
+              kubectl apply -f kubernetes/prometheus-deployment.yaml
+              kubectl apply -f kubernetes/prometheus-service.yaml

@@ -1,5 +1,6 @@
 using FIAP.TECH.CORE.APPLICATION.Configurations;
 using FIAP.TECH.CORE.APPLICATION.Settings.JwtExtensions;
+using Prometheus;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.AddDbContextConfiguration(builder.Configuration);
 
 
 var app = builder.Build();
+app.UseMetricServer();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
@@ -40,7 +42,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.UseHttpMetrics();
+app.UseHttpMetrics();
 
 app.Run();
 
