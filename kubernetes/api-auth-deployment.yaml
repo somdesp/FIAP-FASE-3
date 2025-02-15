@@ -21,6 +21,11 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
           env:
             - name: ConnectionStrings__FiapConnection
               valueFrom:
@@ -47,3 +52,22 @@ spec:
       nodePort: 30081
   selector:
     app: auth-lasted
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auth_lasted-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auth_lasted
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

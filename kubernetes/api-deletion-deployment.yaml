@@ -21,6 +21,11 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
           env:
             - name: ConnectionStrings__FiapConnection
               valueFrom:
@@ -47,3 +52,22 @@ spec:
       nodePort: 30084
   selector:
     app: api-deletion-lasted
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-deletion-lasted-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-deletion-lasted
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
