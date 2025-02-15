@@ -10,6 +10,8 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddMassTransitExtensionWork(context.Configuration);
         services.AddDbContextConfiguration(context.Configuration);
         services.AddValidatorsFromAssemblyContaining<ContactInsertValidation>();
+        services.AddMetrics();
+        services.AddHealthChecks();
         services.AddBasicTinyHealthCheckWithUptime(c =>
                     {
                         c.Port = 5001;
@@ -19,3 +21,5 @@ var host = Host.CreateDefaultBuilder(args)
                     });
     })
     .Build();
+
+await host.RunAsync();
