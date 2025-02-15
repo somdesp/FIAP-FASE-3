@@ -2,24 +2,17 @@ using FIAP.TECH.CORE.APPLICATION.Configurations;
 using FIAP.TECH.WORK.Extensions;
 using FIAP.TECH.WORK.Validation;
 using FluentValidation;
-using TinyHealthCheck;
+using Microsoft.AspNetCore.Builder;
 
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((context, services) =>
-    {
-        services.AddMassTransitExtensionWork(context.Configuration);
-        services.AddDbContextConfiguration(context.Configuration);
-        services.AddValidatorsFromAssemblyContaining<ContactInsertValidation>();
-        services.AddBasicTinyHealthCheckWithUptime(c =>
-                    {
-                        c.Port = 5001;
-                        c.Hostname = "*";
-                        c.UrlPath = "/healthcheck";
-                        return c;
-                    });
-    })
-    .Build();
+var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHealthChecks();
+builder.Services.AddMassTransitExtensionWork(builder.Configuration);
+builder.Services.AddDbContextConfiguration(builder.Configuration);
+builder.Services.AddValidatorsFromAssemblyContaining<ContactInsertValidation>();
+builder.Services.AddHealthChecks();
+var app = builder.Build();
 
+app.MapHealthChecks("/healthz");
 
-await host.RunAsync();
+app.Run();

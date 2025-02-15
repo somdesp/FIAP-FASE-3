@@ -6,7 +6,7 @@ metadata:
   labels:
     app: auth-lasted
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: auth-lasted

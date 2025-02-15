@@ -18,12 +18,24 @@ spec:
       containers:
         - image: somdesp/fiap3:work_service_lasted
           name: work-service-lasted
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
           livenessProbe:
             httpGet:
-              path: /healthcheck
-              port: 5001
+              path: /healthz
+              port: 5000
             initialDelaySeconds: 3
             periodSeconds: 3
+          ports:
+            - containerPort: 5001
+              protocol: TCP
           env:
             - name: ConnectionStrings__FiapConnection
               valueFrom:
@@ -36,15 +48,16 @@ spec:
                 configMapKeyRef:
                   name: apiserver-configmap
                   key: RabbitMq
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: work-service-lasted
-#   # namespace: fiap
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 8080
-#       nodePort: 30081
-#   selector:
-#     app: work-service-lasted
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: work-service-lasted
+  # namespace: fiap
+spec:
+  type: NodePort
+  ports:
+    - port: 5001
+      nodePort: 30091
+  selector:
+    app: work-service-lasted
