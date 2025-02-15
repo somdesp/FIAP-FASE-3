@@ -10,6 +10,11 @@ data:
       scrape_interval: 15s
 
     scrape_configs:
-      - job_name: "kubernetes"
+      - job_name: "prometheus"
         static_configs:
-          - targets: ["localhost:30085", "localhost:30084", "localhost:30083", "localhost:30082"]
+          - targets: ["localhost:9090"]
+
+      - job_name: "techchallenge"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets: ["api-consult-lasted:8080", "api-creation-lasted:8080", "api-deletion-lasted:8080", "api-update-lasted:8080"]

@@ -153,3 +153,5 @@ jobs:
               kubectl apply -f kubernetes/prometheus-config.yaml
               kubectl apply -f kubernetes/prometheus-deployment.yaml
               kubectl apply -f kubernetes/prometheus-service.yaml
+              kubectl apply -f kubernetes/grafana-deployment.yaml
+              kubectl apply -f kubernetes/grafana-service.yaml
