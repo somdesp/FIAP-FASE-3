@@ -4,7 +4,7 @@ metadata:
   #namespace: rabbitmq-system
   name: rabbitmq-server
 spec:
-  replicas: 1
+  replicas: 2
   resources:
     requests:
       cpu: 500m

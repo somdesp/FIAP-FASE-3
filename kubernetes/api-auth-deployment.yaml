@@ -1,31 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-lasted
+  name: auth-latest
   # namespace: fiap
   labels:
-    app: auth-lasted
+    app: auth-latest
+  annotations:
+    autor: "Grupo 23"
+    app-version: "4.0"
+    description: "API responsavel pelo login"
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: auth-lasted
+      app: auth-latest
   template:
     metadata:
       labels:
-        app: auth-lasted
+        app: auth-latest
     spec:
       containers:
-        - image: somdesp/fiap3:auth_lasted
-          name: auth-lasted
+        - image: somdesp/fiap3:auth_latest
+          name: auth-latest
           ports:
             - containerPort: 8080
               protocol: TCP
           resources:
-            limits:
-              cpu: 500m
             requests:
-              cpu: 200m
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
           env:
             - name: ConnectionStrings__FiapConnection
               valueFrom:
@@ -43,7 +49,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-lasted
+  name: auth-latest
   # namespace: fiap
 spec:
   type: NodePort
@@ -51,23 +57,29 @@ spec:
     - port: 8080
       nodePort: 30081
   selector:
-    app: auth-lasted
+    app: auth-latest
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: auth-lasted-hpa
+  name: auth-latest
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: auth-lasted
-  minReplicas: 1
-  maxReplicas: 3
+    name: auth-latest
+  minReplicas: 2
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 40
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 40

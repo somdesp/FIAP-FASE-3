@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage-p
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /run/desktop/mnt/host/d/vol/prom
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-pvc
+spec:
+  storageClassName: local-storage-p
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-server-conf
+
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'api-update-latest'
+        static_configs:
+          - targets: ['api-update-latest:8080']
+
+      - job_name: 'api-creation-latest'
+        static_configs:
+          - targets: ['api-creation-latest:8080']
+
+      - job_name: 'api-deletion-latest'
+        static_configs:
+          - targets: ['api-deletion-latest:8080']   
+
+      - job_name: 'api-consult-latest'
+        static_configs:
+          - targets: ['api-consult-latest:8080']       
+
+      - job_name: 'rabbitmq-server '
+        static_configs:
+          - targets: ['rabbitmq-server:15692']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-server
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prometheus-server
+  template:
+    metadata:
+      labels:
+        app: prometheus-server
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus
+            - name: prometheus-storage-volume
+              mountPath: /prometheus
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-server-conf
+            defaultMode: 420
+        - name: prometheus-storage-volume
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+
+spec:
+  type: NodePort
+  ports:
+    - port: 9090
+      nodePort: 30400
+  selector:
+    app: prometheus-server

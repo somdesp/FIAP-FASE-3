@@ -19,16 +19,16 @@ services:
             RABBITMQ_DEFAULT_PASS: guest
 
     fiap.tech.auth:
-        container_name: auth_lasted
-        image: somdesp/fiap3:auth_lasted
+        container_name: auth_latest
+        image: somdesp/fiap3:auth_latest
         ports:
             - 8001:8080
         depends_on:
             - SqlServerDb
 
     fiap.tech.api.create:
-        container_name: api_creation_lasted
-        image: somdesp/fiap3:api_creation_lasted
+        container_name: api_creation_latest
+        image: somdesp/fiap3:api_creation_latest
         ports:
             - 8002:8080
         depends_on:
@@ -39,8 +39,8 @@ services:
             ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.update:
-        container_name: api_update_lasted
-        image: somdesp/fiap3:api_update_lasted
+        container_name: api_update_latest
+        image: somdesp/fiap3:api_update_latest
         ports:
             - 8003:8080
         depends_on:
@@ -51,8 +51,8 @@ services:
             ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.deletion:
-        container_name: api_deletion_lasted
-        image: somdesp/fiap3:api_deletion_lasted
+        container_name: api_deletion_latest
+        image: somdesp/fiap3:api_deletion_latest
         ports:
             - 8004:8080
         depends_on:
@@ -63,8 +63,8 @@ services:
             ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.api.consult:
-        container_name: api_consult_lasted
-        image: somdesp/fiap3:api_consult_lasted
+        container_name: api_consult_latest
+        image: somdesp/fiap3:api_consult_latest
         ports:
             - 8005:8080
         depends_on:
@@ -75,8 +75,8 @@ services:
             ConnectionStrings__RabbitMq: "amqp://guest:guest@rabbitmq-server:5672/"
 
     fiap.tech.work.service:
-        container_name: work_service_lasted
-        image: somdesp/fiap3:work_service_lasted
+        container_name: work_service_latest
+        image: somdesp/fiap3:work_service_latest
         depends_on:
             - SqlServerDb
             - rabbitmq-server

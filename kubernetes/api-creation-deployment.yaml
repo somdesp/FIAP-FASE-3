@@ -1,31 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-creation-lasted
+  name: api-creation-latest
   # namespace: fiap
   labels:
-    app: api-creation-lasted
+    app: api-creation-latest
+  annotations:
+    autor: "Grupo 23"
+    app-version: "4.0"
+    description: "API responsavel pela criação"
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: api-creation-lasted
+      app: api-creation-latest
   template:
     metadata:
       labels:
-        app: api-creation-lasted
+        app: api-creation-latest
     spec:
       containers:
-        - image: somdesp/fiap3:api_creation_lasted
-          name: api-creation-lasted
+        - image: somdesp/fiap3:api_creation_latest
+          name: api-creation-latest
           ports:
             - containerPort: 8080
               protocol: TCP
           resources:
-            limits:
-              cpu: 500m
             requests:
-              cpu: 200m
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
           env:
             - name: ConnectionStrings__FiapConnection
               valueFrom:
@@ -43,7 +49,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-creation-lasted
+  name: api-creation-latest
   # namespace: fiap
 spec:
   type: NodePort
@@ -51,23 +57,29 @@ spec:
     - port: 8080
       nodePort: 30082
   selector:
-    app: api-creation-lasted
+    app: api-creation-latest
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: api-creation-hpa
+  name: api-creation
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api-creation-lasted
-  minReplicas: 1
-  maxReplicas: 3
+    name: api-creation-latest
+  minReplicas: 2
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 40
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 40

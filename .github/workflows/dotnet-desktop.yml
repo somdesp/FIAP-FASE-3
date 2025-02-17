@@ -59,42 +59,42 @@ jobs:
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.API.CREATION
-          tags: 'somdesp/fiap3:api_creation_lasted'
+          tags: 'somdesp/fiap3:api_creation_latest'
           push: true
 
       - name: Push Docker images (API UPDATE)
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.API.UPDATE
-          tags: 'somdesp/fiap3:api_update_lasted'
+          tags: 'somdesp/fiap3:api_update_latest'
           push: true
 
       - name: Push Docker images (API CONSULT)
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.API.CONSULT
-          tags: 'somdesp/fiap3:api_consult_lasted'
+          tags: 'somdesp/fiap3:api_consult_latest'
           push: true
 
       - name: Push Docker images (API DELETION)
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.API.DELETION
-          tags: 'somdesp/fiap3:api_deletion_lasted'
+          tags: 'somdesp/fiap3:api_deletion_latest'
           push: true
       
       - name: Push Docker images (WORK SERVICE)
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.WORK
-          tags: 'somdesp/fiap3:work_service_lasted'
+          tags: 'somdesp/fiap3:work_service_latest'
           push: true
           
       - name: Push Docker images (AUTH)
         uses: docker/build-push-action@v6.9.0
         with:
           context: ./FIAP.TECH.AUTH/
-          tags: 'somdesp/fiap3:auth_lasted'
+          tags: 'somdesp/fiap3:auth_latest'
           push: true
 
   test:
@@ -117,14 +117,14 @@ jobs:
     - name: Test
       run: dotnet test ./TESTS/FIAP.TECH.TESTS --no-restore --verbosity normal
 
-  deploy_Docker:
-    name: Deploy the application in Docker
-    runs-on: self-hosted
-    needs: [build, test]
+  # deploy_Docker:
+  #   name: Deploy the application in Docker
+  #   runs-on: self-hosted
+  #   needs: [build, test]
 
-    steps:      
-      - name: Deploy Docker
-        run: docker-compose up -d
+  #   steps:      
+  #     - name: Deploy Docker
+  #       run: docker-compose up -d
 
   deploy_Kubernets:
           name: Deploy Kubernets Aplicação
@@ -137,6 +137,7 @@ jobs:
           - name: Deploy the application in Kubernets
             run: |
               kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+              kubectl apply -f kubernetes/metrics-server.yaml
               kubectl apply -f kubernetes/rabbitmq-deployment.yaml
               kubectl apply -f kubernetes/api-configmap.yaml
               kubectl apply -f kubernetes/api-secret.yaml
